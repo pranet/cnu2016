@@ -16,8 +16,8 @@ public void cleanUpStreams() {
     System.setErr(null);
 }
     public void testAppliance()throws Exception{
-        SmartHome.main(null);
-        System.out.println(outContent.toString());
-        assertEquals("Water Heater started at Time: 1\nWater Heater stopped at Time: 3\nCooking Oven already wasn't running at Time: 3\nAir Conditioner started at Time: 4\nWater Heater already wasn't running at Time: 7\nAir Conditioner stopped at Time: 64",outContent.toString());
+        SmartHome smartHomeObj = new SmartHome();
+        smartHomeObj.main(null);
+        assertEquals("Air Conditioner",smartHomeObj.airConditioner.getName());
     }
 }

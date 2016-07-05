@@ -45,11 +45,15 @@ public class SmartHome {
             
         }
     }
-    public static void main(String []args)throws FileNotFoundException{
-        HashMap<Integer, Appliance> applianceMap = new HashMap<Integer, Appliance>();
-        Appliance airConditioner = new Appliance(60, "Air Conditioner");
-        Appliance waterHeater = new Appliance(2, "Water Heater");
-        Appliance cookingOven = new Appliance(3, "Cooking Oven");
+    static HashMap<Integer, Appliance> applianceMap;
+    static Appliance airConditioner;
+    static Appliance waterHeater;
+    static Appliance cookingOven;
+    public static void main(String []args)throws FileNotFoundException{      
+        applianceMap = new HashMap<Integer, Appliance>();
+        airConditioner = new Appliance(60, "Air Conditioner");
+        waterHeater = new Appliance(2, "Water Heater");
+        cookingOven = new Appliance(3, "Cooking Oven");
         
         applianceMap.put(1, airConditioner);
         applianceMap.put(2, waterHeater);
