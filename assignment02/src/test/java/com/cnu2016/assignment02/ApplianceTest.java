@@ -43,4 +43,9 @@ public class ApplianceTest extends TestCase {
 	    assertEquals(appliance1,appliance2);
 	    
 	}
+	public void testNotEquals(){
+	    Appliance appliance1 = new Appliance(5,"Test Appliance");
+	    Appliance appliance2 = new Appliance(6,"Test Appliance");
+	    assertEquals(false,appliance1.equals(appliance2));
+	}
 }
