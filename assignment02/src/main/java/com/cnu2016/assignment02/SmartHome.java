@@ -12,11 +12,9 @@ public class SmartHome {
     Appliance cookingOven;
     List events[];
     
-    public static void main(String []args)throws FileNotFoundException{      
+    public static void main(String []args)throws Exception{
         SmartHome smartHome = new SmartHome();
-        smartHome.initialize();
-        smartHome.recordEvents();
-        smartHome.executeTimeline();
+        smartHome.startSmartHome(smartHome, "input.txt");
     }
     
     public void initialize(){
@@ -34,8 +32,8 @@ public class SmartHome {
             events[i] = new ArrayList<Event>();
         }
     }
-    public void recordEvents()throws FileNotFoundException{
-        File file = new File("input.txt");
+    public void recordEvents(String fileName)throws FileNotFoundException{
+        File file = new File(fileName);
         Scanner input = new Scanner(file);
         while (input.hasNext()) {
             int time = input.nextInt();
@@ -54,7 +52,7 @@ public class SmartHome {
             try{
                 for(int j=0;j<eventsAtGivenTime.size();j++){
                     Event currentEvent = eventsAtGivenTime.get(j);
-                    performEvent(currentEvent);
+                    System.out.println(performEvent(currentEvent));
                 }
             }
             catch(NullPointerException e){
@@ -62,29 +60,36 @@ public class SmartHome {
             }
         }
     }
-    public void performEvent(Event e){
+    public String performEvent(Event e){
         Appliance appliance = e.getAppliance();
         int time = e.getTime();
         boolean status = e.getStatus();
+        String res = "";
         if(status){
             if(!appliance.getStatus()){
                 appliance.switchOn(time);
-                System.out.println(appliance.getName()+" started at Time: "+time);
+                res= appliance.getName()+" started at Time: "+time;
             }
             else{
-                System.out.println(appliance.getName()+" already running at Time: "+time);
+                res = appliance.getName()+" already running at Time: "+time;
             }
         }
         else{
             if(appliance.getStatus()){
                 appliance.switchOff(time);
-                System.out.println(appliance.getName()+" stopped at Time: "+time);
+                res = appliance.getName()+" stopped at Time: "+time;
             }
             else{
-                System.out.println(appliance.getName()+" already wasn't running at Time: "+time);
+                res = appliance.getName()+" already wasn't running at Time: "+time;
             }
             
         }
+        return res;
     }
     
+    public void startSmartHome(SmartHome smartHome, String fileName)throws FileNotFoundException{      
+        smartHome.initialize();
+        smartHome.recordEvents(fileName);
+        smartHome.executeTimeline();
+    }
 }
