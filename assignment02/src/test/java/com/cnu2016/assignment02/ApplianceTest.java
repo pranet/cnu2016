@@ -37,4 +37,10 @@ public class ApplianceTest extends TestCase {
 		appliance.switchOff(4);
 		assertEquals(false, appliance.getStatus());
 	}
+	public void testEquals(){
+	    Appliance appliance1 = new Appliance(5,"Test Appliance");
+	    Appliance appliance2 = new Appliance(5,"Test Appliance");
+	    assertEquals(appliance1,appliance2);
+	    
+	}
 }

@@ -18,4 +18,15 @@ public class Event {
     public boolean getStatus(){
         return status;
     }
+    @Override
+    public boolean equals(Object obj) {
+        Event event1 = this;
+        Event event2 = (Event) obj;
+        if(event1.getTime()==event2.getTime()
+            && event1.getAppliance().equals(event2.getAppliance())
+            && event1.getStatus()==event2.getStatus())
+            return true;
+        else
+            return false;
+    }
 }

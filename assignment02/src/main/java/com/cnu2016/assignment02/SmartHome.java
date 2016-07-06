@@ -6,12 +6,40 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class SmartHome {
-    public static void recordEvents(List events[], HashMap<Integer, Appliance> applianceMapping)throws FileNotFoundException{
+    HashMap<Integer, Appliance> applianceMap;
+    Appliance airConditioner;
+    Appliance waterHeater;
+    Appliance cookingOven;
+    List events[];
+    
+    public static void main(String []args)throws FileNotFoundException{      
+        SmartHome smartHome = new SmartHome();
+        smartHome.initialize();
+        smartHome.recordEvents();
+        smartHome.executeTimeline();
+    }
+    
+    public void initialize(){
+        applianceMap = new HashMap<Integer, Appliance>();
+        airConditioner = new Appliance(60, "Air Conditioner");
+        waterHeater = new Appliance(2, "Water Heater");
+        cookingOven = new Appliance(3, "Cooking Oven");
+        
+        applianceMap.put(1, airConditioner);
+        applianceMap.put(2, waterHeater);
+        applianceMap.put(3, cookingOven);
+        
+        events = new List[1000000];
+        for(int i=0;i<100000;i++){
+            events[i] = new ArrayList<Event>();
+        }
+    }
+    public void recordEvents()throws FileNotFoundException{
         File file = new File("input.txt");
         Scanner input = new Scanner(file);
         while (input.hasNext()) {
             int time = input.nextInt();
-            Appliance appliance = applianceMapping.get(input.nextInt());
+            Appliance appliance = applianceMap.get(input.nextInt());
             boolean status = (input.nextInt()==0)?false:true;
             events[time].add(new Event(time,appliance,status));
             if(status){
@@ -19,9 +47,22 @@ public class SmartHome {
                 events[defaultStopTime].add(new Event(defaultStopTime,appliance,!status));
             }
         }
-        
     }
-    public static void performEvent(Event e){
+    public void executeTimeline(){
+        for(int i=0;i<1000000;i++){
+            List<Event> eventsAtGivenTime = events[i];
+            try{
+                for(int j=0;j<eventsAtGivenTime.size();j++){
+                    Event currentEvent = eventsAtGivenTime.get(j);
+                    performEvent(currentEvent);
+                }
+            }
+            catch(NullPointerException e){
+                
+            }
+        }
+    }
+    public void performEvent(Event e){
         Appliance appliance = e.getAppliance();
         int time = e.getTime();
         boolean status = e.getStatus();
@@ -45,39 +86,5 @@ public class SmartHome {
             
         }
     }
-    static HashMap<Integer, Appliance> applianceMap;
-    static Appliance airConditioner;
-    static Appliance waterHeater;
-    static Appliance cookingOven;
-    public static void main(String []args)throws FileNotFoundException{      
-        applianceMap = new HashMap<Integer, Appliance>();
-        airConditioner = new Appliance(60, "Air Conditioner");
-        waterHeater = new Appliance(2, "Water Heater");
-        cookingOven = new Appliance(3, "Cooking Oven");
-        
-        applianceMap.put(1, airConditioner);
-        applianceMap.put(2, waterHeater);
-        applianceMap.put(3, cookingOven);
-        
-        List events[] = new List[1000000];
-        for(int i=0;i<100000;i++){
-            events[i] = new ArrayList<Event>();
-        }
-        
-        recordEvents(events, applianceMap);
-        
-        for(int i=0;i<1000000;i++){
-            List<Event> eventsAtGivenTime = events[i];
-            try{
-                for(int j=0;j<eventsAtGivenTime.size();j++){
-                    Event currentEvent = eventsAtGivenTime.get(j);
-                    performEvent(currentEvent);
-                }
-            }
-            catch(NullPointerException e){
-                
-            }
-        }
-        
-    }
+    
 }

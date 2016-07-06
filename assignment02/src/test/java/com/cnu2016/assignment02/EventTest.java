@@ -11,5 +11,11 @@ public class EventTest extends TestCase {
 		assertEquals(appliance,event.getAppliance());
 		
 	}
+	public void testEquals(){
+	    Appliance appliance = new Appliance(5, "test appliance");
+		Event event1 = new Event(4, appliance, true);
+		Event event2 = new Event(4, appliance, true);
+		assertEquals(event1,event2);
+	}
 
 }

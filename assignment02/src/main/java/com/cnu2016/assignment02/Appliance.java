@@ -42,4 +42,14 @@ public class Appliance{
         setStatus(false);
         setTimeStarted(-1);
     }
+    @Override
+    public boolean equals(Object obj) {
+        Appliance appliance1 = this;
+        Appliance appliance2 = (Appliance)obj;
+        if(appliance1.getName()==appliance2.getName()&&appliance1.getMaxRunningTime()==appliance2.maxRunningTime)
+            return true;
+        else
+            return false;
+    }
+
 }
