@@ -1,20 +1,33 @@
 package com.cnu2016.nagarwal.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by niteshagarwal002 on 08/07/16.
  */
 @Entity
-public class Order {
+@Table(name="Orders")
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="idOrder")
     private int id;
     private String orderStatus;
+    @Column(columnDefinition = "datetime")
     private String orderDate;
-    private float totalAmount;
-    private int idUser;
+    private double totalAmount;
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    private User userOrdering;
+
+    public User getUserOrdering() {
+        return userOrdering;
+    }
+
+    public void setUserOrdering(User userOrdering) {
+        this.userOrdering = userOrdering;
+    }
 
     public int getId() {
         return id;
@@ -40,19 +53,12 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public float getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(float totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
 }

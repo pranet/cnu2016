@@ -1,6 +1,7 @@
 package com.cnu2016.nagarwal.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by niteshagarwal002 on 08/07/16.
@@ -9,20 +10,52 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idUser")
-    private int id;
+    private int idUser;
     private String userName;
     private String userEmail;
     private String userAddress;
-    private String contactNumber;
+    private String userContactNumber;
     private String contactPerson;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+//    private Set<Feedback> feedbacks;
 
-    public int getId() {
-        return id;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userOrdering", cascade = CascadeType.ALL)
+//    private  Set<Orders> orders;
+
+//    public Set<Orders> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(Set<Orders> orders) {
+//        this.orders = orders;
+//    }
+
+//    public Set<Feedback> getFeedbacks() {
+//        return feedbacks;
+//    }
+//
+//    public void setFeedbacks(Set<Feedback> feedbacks) {
+//        this.feedbacks = feedbacks;
+//    }
+
+    public User(String userName, String userEmail, String userAddress, String userContactNumber, String contactPerson) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userAddress = userAddress;
+        this.userContactNumber = userContactNumber;
+        this.contactPerson = contactPerson;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public User() {
+
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int id) {
+        this.idUser = id;
     }
 
     public String getUserName() {
@@ -49,12 +82,12 @@ public class User {
         this.userAddress = userAddress;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getUserContactNumber() {
+        return userContactNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setUserContactNumber(String userContactNumber) {
+        this.userContactNumber = userContactNumber;
     }
 
     public String getContactPerson() {

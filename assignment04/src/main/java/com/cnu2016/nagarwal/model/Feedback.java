@@ -13,9 +13,12 @@ public class Feedback {
     private int id;
     private String description;
     private String type;
+    @Column(columnDefinition = "timestamp")
     private String timestamp;
     private String userEmail;
-    private int idUser;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public int getId() {
         return id;
@@ -57,11 +60,11 @@ public class Feedback {
         this.userEmail = userEmail;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
