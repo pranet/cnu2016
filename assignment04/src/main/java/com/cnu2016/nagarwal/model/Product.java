@@ -22,7 +22,9 @@ public class Product {
     private String code;
     private boolean available;
 
-
+    public Product(){
+        this.available = true;
+    }
     public int getId() {
         return id;
     }
@@ -96,8 +98,7 @@ public class Product {
     public void setAvailable(boolean available) {
         this.available = available;
     }
-    public Product(){
-    }
+
     public void putProductProperties(Product p){
         this.setAvailable(p.isAvailable());
         this.setBrand(p.getBrand());
