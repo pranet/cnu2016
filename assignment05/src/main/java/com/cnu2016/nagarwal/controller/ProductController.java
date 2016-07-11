@@ -3,7 +3,6 @@ package com.cnu2016.nagarwal.controller;
 /**
  * Created by niteshagarwal002 on 07/07/16.
  */
-import com.cnu2016.nagarwal.helpers.AWSSQSUtility;
 import com.cnu2016.nagarwal.model.Product;
 import com.cnu2016.nagarwal.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.MediaType;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 
 @RestController
@@ -75,13 +74,12 @@ public class ProductController {
 
 
     @RequestMapping(path="/api/products/{id}", method=RequestMethod.PATCH)
-    public ResponseEntity<?> patchProduct(@RequestBody Product product,@PathVariable Integer id, HttpServletRequest request) {
+    public ResponseEntity<?> patchProduct(@RequestBody Product product,@PathVariable Integer id) {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(repository.exists(id)) {
             Product productInDb = repository.findOne(id);
             productInDb.patchProductProperties(product);
             repository.save(productInDb);
-
             return new ResponseEntity<Object>(productInDb,responseHeaders,HttpStatus.OK);
         }
         else {
