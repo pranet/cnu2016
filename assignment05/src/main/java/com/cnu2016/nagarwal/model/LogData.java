@@ -12,6 +12,7 @@ import java.util.Date;
 public class LogData {
     private DateTime timestamp;
     private String url;
+    private String parameters;
     private int ResponseCode;
     private String ipAddress;
 
@@ -22,6 +23,7 @@ public class LogData {
         this.timestamp = new DateTime();
         this.url = request.getRequestURL().toString();
         this.ipAddress = request.getRemoteAddr();
+        this.parameters = request.getParameterMap().toString();
         this.ResponseCode = response.getStatus();
     }
     public DateTime getTimestamp() {
@@ -38,6 +40,14 @@ public class LogData {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(String parameters) {
+        this.parameters = parameters;
     }
 
     public int getResponseCode() {
