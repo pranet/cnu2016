@@ -24,7 +24,7 @@ public class LogData {
     public LogData(HttpServletRequest request, HttpServletResponse response,long totalTime){
         this.timestamp = new DateTime();
         String completeRequestUrl = request.getRequestURL().toString();
-        if(completeRequestUrl.charAt('?')<0) {
+        if(completeRequestUrl.indexOf('?')<0) {
             this.url = completeRequestUrl;
             this.parameters = "";
         }
