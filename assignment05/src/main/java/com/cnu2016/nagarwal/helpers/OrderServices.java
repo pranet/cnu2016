@@ -20,17 +20,16 @@ public class OrderServices {
     ProductRepository productRepository;
     @Autowired
     OrderRepository orderRepository;
-    public List<OrderProduct> listOrderProducts(int orderId){
-        Iterable<OrderProduct> iterableOrderProduct = orderProductRepository.findAll();
-        List<OrderProduct> listOrderProduct = new ArrayList<>();
-        iterableOrderProduct.forEach(listOrderProduct::add);
-        List<OrderProduct> results = new ArrayList<>();
-        for(OrderProduct item: listOrderProduct){
-            if(item.getId().getOrders().getId()==orderId){
-                results.add(item);
-            }
-        }
-        return results;
-    }
+//    public Iterable<OrderProduct> listOrderProducts(int orderId){
+//        Iterable<OrderProduct> iterableOrderProduct = orderProductRepository.findAll();
+//        Iterable<OrderProduct> results = new ArrayList<>();
+//        for(OrderProduct item: iterableOrderProduct){
+//            if(item.getId().getOrders().getId()==orderId){
+//                results.;
+//                System.out.println(item.getQuantity());
+//            }
+//        }
+//        return results;
+//    }
 
 }

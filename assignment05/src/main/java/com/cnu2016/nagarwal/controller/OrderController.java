@@ -61,14 +61,15 @@ public class OrderController {
             Orders orders = orderRepository.findOne(oid);
             orders.setOrderStatus(checkoutDetails.getStatus());
             orders.setUserOrdering(user);
-            OrderServices orderServices = new OrderServices();
-            List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(oid);
+            Iterable<OrderProduct> listOrderProducts = orderProductRepository.findAll();
             for (OrderProduct item : listOrderProducts) {
-                Product product = item.getId().getProduct();
-                product.setQty(product.getQty() - item.getQuantity());
-                productRepository.save(product);
-                item.setSellPrice(product.getSellPrice());
-                orderProductRepository.save(item);
+                if(item.getId().getOrders().getId()==oid) {
+                    Product product = item.getId().getProduct();
+                    product.setQty(product.getQty() - item.getQuantity());
+                    productRepository.save(product);
+                    item.setSellPrice(product.getSellPrice());
+                    orderProductRepository.save(item);
+                }
             }
             orderRepository.save(orders);
             responseHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -83,10 +84,12 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(@PathVariable Integer id) {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(orderRepository.exists(id)) {
-            OrderServices orderServices = new OrderServices();
-            List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(id);
-            for(OrderProduct item:listOrderProducts){
-                orderProductRepository.delete(item);
+
+            Iterable<OrderProduct> listOrderProducts = orderProductRepository.findAll();
+            for (OrderProduct item : listOrderProducts) {
+                if(item.getId().getOrders().getId()==id) {
+                    orderProductRepository.delete(item);
+                }
             }
             orderRepository.delete(id);
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
