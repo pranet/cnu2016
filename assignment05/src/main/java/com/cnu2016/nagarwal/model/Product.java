@@ -22,6 +22,16 @@ public class Product {
     private String code;
     private boolean available;
 
+    public Product(String productName, String description, String brand, float sellPrice, float buyPrice, int itemInStock, String code, boolean available) {
+        this.productName = productName;
+        this.description = description;
+        this.brand = brand;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+        this.itemInStock = itemInStock;
+        this.code = code;
+        this.available = available;
+    }
 
     public int getId() {
         return id;

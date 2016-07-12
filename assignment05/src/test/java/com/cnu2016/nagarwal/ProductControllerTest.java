@@ -38,7 +38,5 @@ public class ProductControllerTest {
         Product apiResponse = restTemplate.getForObject("http://localhost:8080/api/products/"+id,Product.class);
         assertNotNull(apiResponse);
         assertEquals(apiResponse.getProductName(),product.getProductName());
-
-
     }
 }

@@ -5,9 +5,9 @@ package com.cnu2016.nagarwal.model;
  */
 public class CheckoutDetails {
     private String status;
-    private String userName;
+    private String user_name;
     private String userEmail;
-    private String userAddress;
+    private String address;
     private String userContactNumber;
     private String contactPerson;
 
@@ -19,12 +19,12 @@ public class CheckoutDetails {
         this.status = status;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getUserEmail() {
@@ -35,12 +35,12 @@ public class CheckoutDetails {
         this.userEmail = userEmail;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getUserContactNumber() {

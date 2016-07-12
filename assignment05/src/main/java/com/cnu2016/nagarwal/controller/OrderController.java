@@ -49,10 +49,9 @@ public class OrderController {
 
     @RequestMapping(path="/api/order/{oid}", method= RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@RequestBody CheckoutDetails checkoutDetails, @PathVariable Integer oid){
-        User user = new User();
-        user = userRepository.findUniqueByUserName(checkoutDetails.getUserName());
+        User user = userRepository.findUniqueByUserName(checkoutDetails.getUser_name());
         if(user==null){
-            user = new User(checkoutDetails.getUserName(),checkoutDetails.getUserEmail(),checkoutDetails.getUserAddress(),checkoutDetails.getUserContactNumber(),checkoutDetails.getContactPerson());
+            user = new User(checkoutDetails.getUser_name(),checkoutDetails.getUserEmail(),checkoutDetails.getAddress(),checkoutDetails.getUserContactNumber(),checkoutDetails.getContactPerson());
             userRepository.save(user);
         }
         Orders orders = orderRepository.findOne(oid);

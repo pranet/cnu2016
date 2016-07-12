@@ -4,23 +4,23 @@ package com.cnu2016.nagarwal.model;
  * Created by niteshagarwal002 on 10/07/16.
  */
 public class ItemFromCart{
-    private int idProduct;
-    private int quantity;
+    private int product_id;
+    private int qty;
 
-    public int getIdProduct() {
-        return idProduct;
+    public int getProduct_id() {
+        return product_id;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQty() {
+        return qty;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
 

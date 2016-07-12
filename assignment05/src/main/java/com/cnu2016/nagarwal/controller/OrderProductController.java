@@ -57,13 +57,18 @@ public class OrderProductController {
 
     @RequestMapping(path = "/api/order/{oid}/orderLineItem", method = RequestMethod.POST)
     public ResponseEntity<?> addItemtoOrder(@RequestBody ItemFromCart itemFromCart, @PathVariable Integer oid){
-        Product product = productRepository.findOne(itemFromCart.getIdProduct());
-        Orders orders = orderRepository.findOne(oid);
-        OrderProductCompositeId orderProductCompositeId = new OrderProductCompositeId(product,orders);
-        OrderProduct orderProduct = new OrderProduct(orderProductCompositeId, itemFromCart.getQuantity(), product.getSellPrice());
-        orderProductRepository.save(orderProduct);
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<Object>(orderProduct, responseHeaders, HttpStatus.CREATED);
+        if(orderRepository.exists(oid) && productRepository.exists(itemFromCart.getProduct_id())) {
+            Product product = productRepository.findOne(itemFromCart.getProduct_id());
+            Orders orders = orderRepository.findOne(oid);
+            OrderProductCompositeId orderProductCompositeId = new OrderProductCompositeId(product, orders);
+            OrderProduct orderProduct = new OrderProduct(orderProductCompositeId, itemFromCart.getQty(), product.getSellPrice());
+            orderProductRepository.save(orderProduct);
+            responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity<Object>(orderProduct, responseHeaders, HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

@@ -11,7 +11,8 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name= "idFeedback")
     private int id;
-    private String description;
+    @Column(name="description")
+    private String message;
     private String type;
     @Column(columnDefinition = "timestamp")
     private String timestamp;
@@ -28,12 +29,12 @@ public class Feedback {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getType() {
