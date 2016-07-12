@@ -59,7 +59,7 @@ public class OrderProductController {
     public ResponseEntity<?> addItemtoOrder(@RequestBody ItemFromCart itemFromCart, @PathVariable Integer oid){
         if(orderRepository.exists(oid) && productRepository.exists(itemFromCart.getProduct_id())) {
             Product product = productRepository.findOne(itemFromCart.getProduct_id());
-            if(!product.isAvailable()||product.getQty()<itemFromCart.getQty()){
+            if(!product.isAvailable()||product.getQty()>itemFromCart.getQty()){
                 return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
             }
             Orders orders = orderRepository.findOne(oid);
