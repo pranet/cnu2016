@@ -17,18 +17,19 @@ public class Product {
     private String brand;
     private float sellPrice;
     private float buyPrice;
-    private int itemInStock;
+    @Column(name="itemInStock")
+    private int qty;
     @Column(name="productCode")
     private String code;
     private boolean available;
 
-    public Product(String productName, String description, String brand, float sellPrice, float buyPrice, int itemInStock, String code, boolean available) {
+    public Product(String productName, String description, String brand, float sellPrice, float buyPrice, int qty, String code, boolean available) {
         this.productName = productName;
         this.description = description;
         this.brand = brand;
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;
-        this.itemInStock = itemInStock;
+        this.qty = qty;
         this.code = code;
         this.available = true;
     }
@@ -82,13 +83,13 @@ public class Product {
         this.buyPrice = buyPrice;
     }
 
-    public int getItemInStock() {
+    public int getQty() {
 
-        return itemInStock;
+        return qty;
     }
 
-    public void setItemInStock(int itemInStock) {
-        this.itemInStock = itemInStock;
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public String getCode() {
@@ -115,7 +116,7 @@ public class Product {
         this.setBuyPrice(p.getBuyPrice());
         this.setCode(p.getCode());
         this.setDescription(p.getDescription());
-        this.setItemInStock(p.getItemInStock());
+        this.setQty(p.getQty());
         this.setProductName(p.getProductName());
     }
     public void patchProductProperties(Product p){
