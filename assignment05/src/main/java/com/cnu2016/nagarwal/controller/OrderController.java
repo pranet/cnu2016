@@ -52,6 +52,7 @@ public class OrderController {
 
     @RequestMapping(path="/api/orders/{oid}", method= RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@RequestBody CheckoutDetails checkoutDetails, @PathVariable Integer oid){
+        if(checkoutDetails.getUser_name()==null)return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
         if(orderRepository.exists(oid)) {
             User user = userRepository.findUniqueByUserName(checkoutDetails.getUser_name());
             if (user == null) {
@@ -65,6 +66,8 @@ public class OrderController {
             for (OrderProduct item : listOrderProducts) {
                 if(item.getId().getOrders().getId()==oid) {
                     Product product = item.getId().getProduct();
+                    if(product.getQty()<item.getQuantity())
+                        return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
                     product.setQty(product.getQty() - item.getQuantity());
                     productRepository.save(product);
                     item.setSellPrice(product.getSellPrice());
