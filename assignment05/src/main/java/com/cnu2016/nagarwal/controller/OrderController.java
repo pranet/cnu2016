@@ -6,6 +6,7 @@ import com.cnu2016.nagarwal.model.User;
 import com.cnu2016.nagarwal.repository.OrderRepository;
 import com.cnu2016.nagarwal.repository.ProductRepository;
 import com.cnu2016.nagarwal.repository.UserRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,14 @@ public class OrderController {
 
     HttpHeaders responseHeaders = new HttpHeaders();
 
-    @RequestMapping(path="/api/orders", method= RequestMethod.GET)
-    public ResponseEntity<?> getOrders() {
-//        List<Orders> order = new ArrayList<Orders>();
-//        for(Orders o : orderProductRepository.findAll()) {
-//            order.add(o);
-//        }
+    @RequestMapping(path="/api/orders/{oid}", method= RequestMethod.GET)
+    public ResponseEntity<?> getOrder(@PathVariable Integer oid) {
+        Orders orders = orderRepository.findOne(oid);
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<Object>(orderProductRepository.findAll(),responseHeaders, HttpStatus.OK);
+        if(orderRepository.exists(oid))
+            return new ResponseEntity<Object>(orders,responseHeaders,HttpStatus.OK);
+        else
+            return new ResponseEntity<Object>("{\"detail\":\"Not found.\"}",responseHeaders,HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path="/api/orders", method = RequestMethod.POST)

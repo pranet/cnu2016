@@ -30,7 +30,7 @@ public class Product {
         this.buyPrice = buyPrice;
         this.itemInStock = itemInStock;
         this.code = code;
-        this.available = available;
+        this.available = true;
     }
 
     public int getId() {
