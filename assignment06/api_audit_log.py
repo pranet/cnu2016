@@ -30,7 +30,7 @@ class audit_log(db.Model):
     def as_json(self):
         return {
             "timestamp": HelperFunctions.format_date_to_iso_format(self.auditTimeStamp),
-            "url": self.url,
+            "url": HelperFunctions.slicer(self.url),
             "request_type": self.requestType,
             "parameters": HelperFunctions.remove_braces(str(self.parameters)),
             "request_duration_ms": self.requestDuration,

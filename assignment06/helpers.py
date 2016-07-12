@@ -12,3 +12,7 @@ class HelperFunctions:
     @staticmethod
     def remove_braces(line):
         return re.sub('[{}]', '', line)
+    @staticmethod
+    def slicer(line):
+        return line[line.index("api")-1:]
+
