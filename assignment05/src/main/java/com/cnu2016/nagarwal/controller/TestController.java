@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TestController {
-    @RequestMapping(path="/api", method = RequestMethod.GET)
+    @RequestMapping(path="/api/health", method = RequestMethod.GET)
     public ResponseEntity<?> serverStatus(){
         return new ResponseEntity<Object>(null, HttpStatus.OK);
     }
