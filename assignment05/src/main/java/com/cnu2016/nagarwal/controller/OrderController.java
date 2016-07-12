@@ -52,24 +52,31 @@ public class OrderController {
 
     @RequestMapping(path="/api/orders/{oid}", method= RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@RequestBody CheckoutDetails checkoutDetails, @PathVariable Integer oid){
-        User user = userRepository.findUniqueByUserName(checkoutDetails.getUser_name());
-        if(user==null){
-            user = new User(checkoutDetails.getUser_name(),checkoutDetails.getUserEmail(),checkoutDetails.getAddress(),checkoutDetails.getUserContactNumber(),checkoutDetails.getContactPerson());
-            userRepository.save(user);
+        if(orderRepository.exists(oid)) {
+            User user = userRepository.findUniqueByUserName(checkoutDetails.getUser_name());
+            if (user == null) {
+                user = new User(checkoutDetails.getUser_name(), checkoutDetails.getUserEmail(), checkoutDetails.getAddress(), checkoutDetails.getUserContactNumber(), checkoutDetails.getContactPerson());
+                userRepository.save(user);
+            }
+            Orders orders = orderRepository.findOne(oid);
+            orders.setOrderStatus(checkoutDetails.getStatus());
+            orders.setUserOrdering(user);
+            OrderServices orderServices = new OrderServices();
+            List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(oid);
+            for (OrderProduct item : listOrderProducts) {
+                Product product = item.getId().getProduct();
+                product.setQty(product.getQty() - item.getQuantity());
+                productRepository.save(product);
+                item.setSellPrice(product.getSellPrice());
+                orderProductRepository.save(item);
+            }
+            orderRepository.save(orders);
+            responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity<Object>(orders, responseHeaders, HttpStatus.OK);
         }
-        Orders orders = orderRepository.findOne(oid);
-        orders.setOrderStatus(checkoutDetails.getStatus());
-        orders.setUserOrdering(user);
-        orderRepository.save(orders);
-        OrderServices orderServices = new OrderServices();
-        List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(oid);
-        for(OrderProduct item:listOrderProducts){
-            Product product = productRepository.findOne(item.getId().getProduct().getId());
-            product.setQty(product.getQty()-item.getQuantity());
-            productRepository.save(product);
+        else {
+            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
         }
-        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<Object>(orders,responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(path="/api/orders/{id}", method=RequestMethod.DELETE)
