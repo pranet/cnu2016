@@ -55,6 +55,7 @@ public class ProductController {
     @RequestMapping(path="/api/products", method=RequestMethod.POST)
     public ResponseEntity<?> insertProduct(@RequestBody Product product) {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        product.setAvailable(true);
         product.setId(repository.save(product).getId());
         return new ResponseEntity<Object>(product,responseHeaders,HttpStatus.CREATED);
     }
