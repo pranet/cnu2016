@@ -94,14 +94,17 @@ public class ProductController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(repository.exists(id)) {
             Product productInDb = repository.findOne(id);
-            productInDb.setAvailable(false);
-            repository.save(productInDb);
-
-            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            if(productInDb.isAvailable()) {
+                productInDb.setAvailable(false);
+                repository.save(productInDb);
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+            else {
+                return new ResponseEntity<Object>("{\"detail\":\"Not found.\"}",responseHeaders,HttpStatus.NOT_FOUND);
+            }
         }
         else {
             return new ResponseEntity<Object>("{\"detail\":\"Not found.\"}",responseHeaders,HttpStatus.NOT_FOUND);
         }
-
     }
 }

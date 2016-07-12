@@ -64,7 +64,7 @@ public class OrderController {
     }
 
     @RequestMapping(path="/api/orders/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteOrder(@PathVariable Integer id) {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(orderRepository.exists(id)) {
             orderRepository.delete(id);
