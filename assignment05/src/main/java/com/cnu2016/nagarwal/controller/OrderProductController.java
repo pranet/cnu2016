@@ -68,7 +68,7 @@ public class OrderProductController {
             if(orderProductRepository.exists(orderProductCompositeId)){
                 orderProduct = orderProductRepository.findOne(orderProductCompositeId);
             }
-            if(orderProduct.getQuantity()+itemFromCart.getQty()<product.getQty())
+            if(orderProduct.getQuantity()+itemFromCart.getQty()>product.getQty())
                 return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
             orderProduct.setQuantity(orderProduct.getQuantity()+itemFromCart.getQty());
             orderProductRepository.save(orderProduct);
