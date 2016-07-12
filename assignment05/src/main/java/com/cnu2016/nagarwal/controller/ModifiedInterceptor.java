@@ -18,9 +18,19 @@ public class ModifiedInterceptor extends HandlerInterceptorAdapter{
     private LogData logData;
 
     @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response, Object handler) throws Exception {
+        long startTime = System.currentTimeMillis();
+        request.setAttribute("startTime", startTime);
+        return true;
+    }
+
+    @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         AWSSQSUtility awsSqsUtility = new AWSSQSUtility();
-        logData = new LogData(httpServletRequest, httpServletResponse);
+        long startTime = (Long) httpServletRequest.getAttribute("startTime");
+        long totalTime = System.currentTimeMillis() - startTime;
+        logData = new LogData(httpServletRequest, httpServletResponse,totalTime);
         String url = awsSqsUtility.getQueueUrl("cnu2016_nagarwal_assignment05");
         String res = new ObjectMapper().writeValueAsString(logData);
         awsSqsUtility.sendMessageToQueue(url,res);

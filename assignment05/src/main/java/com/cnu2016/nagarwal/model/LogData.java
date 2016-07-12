@@ -15,17 +15,38 @@ public class LogData {
     private String parameters;
     private int ResponseCode;
     private String ipAddress;
+    private int requestDuration;
+    private String requestType;
 
     public LogData(){
 
     }
-    public LogData(HttpServletRequest request, HttpServletResponse response){
+    public LogData(HttpServletRequest request, HttpServletResponse response,long totalTime){
         this.timestamp = new DateTime();
         this.url = request.getRequestURL().toString();
         this.ipAddress = request.getRemoteAddr();
         this.parameters = request.getParameterMap().toString();
         this.ResponseCode = response.getStatus();
+        this.requestType = request.getMethod();
+        this.requestDuration = (int)totalTime;
     }
+
+    public int getRequestDuration() {
+        return requestDuration;
+    }
+
+    public void setRequestDuration(int requestDuration) {
+        this.requestDuration = requestDuration;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
     public DateTime getTimestamp() {
         return timestamp;
     }
