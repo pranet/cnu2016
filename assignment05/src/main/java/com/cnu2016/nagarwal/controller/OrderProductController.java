@@ -59,7 +59,7 @@ public class OrderProductController {
     public ResponseEntity<?> addItemtoOrder(@RequestBody ItemFromCart itemFromCart, @PathVariable Integer oid){
         if(orderRepository.exists(oid) && productRepository.exists(itemFromCart.getProduct_id())) {
             Product product = productRepository.findOne(itemFromCart.getProduct_id());
-            if(!product.isAvailable()||product.getQty()<itemFromCart.getQty()){
+            if(!product.isAvailable()){
                 return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
             }
             Orders orders = orderRepository.findOne(oid);
@@ -67,10 +67,8 @@ public class OrderProductController {
             OrderProduct orderProduct = new OrderProduct(orderProductCompositeId, itemFromCart.getQty(), product.getSellPrice());
             if(orderProductRepository.exists(orderProductCompositeId)){
                 orderProduct = orderProductRepository.findOne(orderProductCompositeId);
+                orderProduct.setQuantity(orderProduct.getQuantity()+itemFromCart.getQty());
             }
-            if(orderProduct.getQuantity()+itemFromCart.getQty()>product.getQty())
-                return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
-            orderProduct.setQuantity(orderProduct.getQuantity()+itemFromCart.getQty());
             orderProductRepository.save(orderProduct);
             responseHeaders.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity<Object>(orderProduct, responseHeaders, HttpStatus.CREATED);
