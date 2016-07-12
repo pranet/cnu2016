@@ -55,7 +55,7 @@ public class OrderProductController {
         return null;
     }
 
-    @RequestMapping(path = "/api/order/{oid}/orderLineItem", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/orders/{oid}/orderLineItem", method = RequestMethod.POST)
     public ResponseEntity<?> addItemtoOrder(@RequestBody ItemFromCart itemFromCart, @PathVariable Integer oid){
         if(orderRepository.exists(oid) && productRepository.exists(itemFromCart.getProduct_id())) {
             Product product = productRepository.findOne(itemFromCart.getProduct_id());

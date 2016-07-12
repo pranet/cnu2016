@@ -39,7 +39,7 @@ public class OrderController {
         return new ResponseEntity<Object>(orderProductRepository.findAll(),responseHeaders, HttpStatus.OK);
     }
 
-    @RequestMapping(path="/api/order", method = RequestMethod.POST)
+    @RequestMapping(path="/api/orders", method = RequestMethod.POST)
     public ResponseEntity<?> createOrder(){
         Orders order = new Orders();
         orderProductRepository.save(order);
@@ -47,7 +47,7 @@ public class OrderController {
         return new ResponseEntity<Object>(order,responseHeaders, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path="/api/order/{oid}", method= RequestMethod.PATCH)
+    @RequestMapping(path="/api/orders/{oid}", method= RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@RequestBody CheckoutDetails checkoutDetails, @PathVariable Integer oid){
         User user = userRepository.findUniqueByUserName(checkoutDetails.getUser_name());
         if(user==null){
