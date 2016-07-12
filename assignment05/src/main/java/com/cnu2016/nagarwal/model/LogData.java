@@ -23,7 +23,16 @@ public class LogData {
     }
     public LogData(HttpServletRequest request, HttpServletResponse response,long totalTime){
         this.timestamp = new DateTime();
-        this.url = request.getRequestURL().toString();
+        String completeRequestUrl = request.getRequestURL().toString();
+        if(completeRequestUrl.charAt('?')<0) {
+            this.url = completeRequestUrl;
+            this.parameters = "";
+        }
+        else {
+            int questionMarkIndex = completeRequestUrl.indexOf("?");
+            this.url = completeRequestUrl.substring(0,questionMarkIndex);
+            this.parameters = completeRequestUrl.substring(questionMarkIndex+1,completeRequestUrl.length());
+        }
         this.ipAddress = request.getRemoteAddr();
         this.parameters = request.getParameterMap().toString();
         this.ResponseCode = response.getStatus();
