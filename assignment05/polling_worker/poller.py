@@ -32,14 +32,16 @@ while True:
     # print timestamp
 
     add_audit_log = ("INSERT INTO audit_log "
-                     "(auditTimestamp, url, parameters, response, ipAddress) "
-                     "VALUES ( %(auditTimestamp)s, %(url)s, %(parameters)s, %(response)s, %(ipAddress)s)")
+                     "(auditTimestamp, url, parameters, response, ipAddress, requestType, requestDuration) "
+                     "VALUES ( %(auditTimestamp)s, %(url)s, %(parameters)s, %(response)s, %(ipAddress)s, %(requestType)s,%(requestDuration)s)")
     data_audit_log = {
         "auditTimestamp": timestamp,
         "url": data['url'],
         "parameters": data['parameters'],
         "response": data['responseCode'],
-        "ipAddress": data['ipAddress']
+        "ipAddress": data['ipAddress'],
+        "requestType": data['requestType'],
+        "requestDuration":data['requestDuration']
     }
     cursor.execute(add_audit_log, data_audit_log)
     cnx.commit()
