@@ -1,8 +1,8 @@
 package com.cnu2016.nagarwal.controller;
 
-import com.cnu2016.nagarwal.model.CheckoutDetails;
-import com.cnu2016.nagarwal.model.Orders;
-import com.cnu2016.nagarwal.model.User;
+import com.cnu2016.nagarwal.helpers.OrderServices;
+import com.cnu2016.nagarwal.model.*;
+import com.cnu2016.nagarwal.repository.OrderProductRepository;
 import com.cnu2016.nagarwal.repository.OrderRepository;
 import com.cnu2016.nagarwal.repository.ProductRepository;
 import com.cnu2016.nagarwal.repository.UserRepository;
@@ -14,13 +14,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by niteshagarwal002 on 09/07/16.
  */
 @RestController
 public class OrderController {
     @Autowired
-    private OrderRepository orderProductRepository;
+    private OrderProductRepository orderProductRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -43,7 +45,7 @@ public class OrderController {
     @RequestMapping(path="/api/orders", method = RequestMethod.POST)
     public ResponseEntity<?> createOrder(){
         Orders order = new Orders();
-        orderProductRepository.save(order);
+        orderRepository.save(order);
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<Object>(order,responseHeaders, HttpStatus.CREATED);
     }
@@ -59,6 +61,13 @@ public class OrderController {
         orders.setOrderStatus(checkoutDetails.getStatus());
         orders.setUserOrdering(user);
         orderRepository.save(orders);
+        OrderServices orderServices = new OrderServices();
+        List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(oid);
+        for(OrderProduct item:listOrderProducts){
+            Product product = productRepository.findOne(item.getId().getProduct().getId());
+            product.setQty(product.getQty()-item.getQuantity());
+            productRepository.save(product);
+        }
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<Object>(orders,responseHeaders, HttpStatus.OK);
     }
@@ -67,6 +76,11 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(@PathVariable Integer id) {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if(orderRepository.exists(id)) {
+            OrderServices orderServices = new OrderServices();
+            List<OrderProduct> listOrderProducts = orderServices.listOrderProducts(id);
+            for(OrderProduct item:listOrderProducts){
+                orderProductRepository.delete(item);
+            }
             orderRepository.delete(id);
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         }

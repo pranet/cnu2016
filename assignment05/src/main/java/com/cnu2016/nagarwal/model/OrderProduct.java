@@ -2,6 +2,7 @@ package com.cnu2016.nagarwal.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by niteshagarwal002 on 08/07/16.
