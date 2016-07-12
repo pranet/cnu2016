@@ -65,6 +65,12 @@ public class OrderProductController {
             Orders orders = orderRepository.findOne(oid);
             OrderProductCompositeId orderProductCompositeId = new OrderProductCompositeId(product, orders);
             OrderProduct orderProduct = new OrderProduct(orderProductCompositeId, itemFromCart.getQty(), product.getSellPrice());
+            if(orderProductRepository.exists(orderProductCompositeId)){
+                orderProduct = orderProductRepository.findOne(orderProductCompositeId);
+            }
+            if(orderProduct.getQuantity()+itemFromCart.getQty()<product.getQty())
+                return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+            orderProduct.setQuantity(orderProduct.getQuantity()+itemFromCart.getQty());
             orderProductRepository.save(orderProduct);
             responseHeaders.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity<Object>(orderProduct, responseHeaders, HttpStatus.CREATED);
