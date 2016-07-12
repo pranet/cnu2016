@@ -62,4 +62,16 @@ public class OrderController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<Object>(orders,responseHeaders, HttpStatus.OK);
     }
+
+    @RequestMapping(path="/api/orders/{id}", method=RequestMethod.DELETE)
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        if(orderRepository.exists(id)) {
+            orderRepository.delete(id);
+            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        }
+        else {
+            return new ResponseEntity<Object>("{\"detail\":\"Not found.\"}",responseHeaders,HttpStatus.NOT_FOUND);
+        }
+    }
 }
